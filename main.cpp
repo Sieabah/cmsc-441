@@ -43,11 +43,22 @@ typedef struct complex_struct complex;
 // Complex four-multiply (four real multiplies)
 //   a, b - number to multiply
 //   z - return value (product)
-//void cmul4(complex a, complex b, complex *z);
+complex cmul4(complex x, complex y){
+
+}
+
+complex cmul4_list(std::vector<complex> *numbers){
+    complex answer = (*numbers)[0];
+
+    for(unsigned int i = 1; i < numbers->size(); i++){
+        answer = cmul4(answer, (*numbers)[i]);
+    }
+
+    return answer;
+}
 
 // Complex three-multiply (three real multiplies)
 //   a, b - number to multiply
-//   z - return value (product)
 complex cmul3(complex x, complex y){
     complex z;
     cpp_int t = (x.real + x.imaginary) * (y.real + y.imaginary);
@@ -59,16 +70,15 @@ complex cmul3(complex x, complex y){
     return z;
 }
 
-// Complex list multiply using complex four-multiply
-//   u - array of complex
-//   first - index of first element to multiply
-//   last - index of last element to multiply
-//   z - return value, product of u[first..last]
-//void cmul4_list(complex *u, int first, int last, complex *z);
+complex cmul3_list(std::vector<complex> *numbers){
+    complex answer = (*numbers)[0];
 
-// Complex list multiply using complex three-multiply
-//   u, first, last, z - same as for cmul4_list()
-//void cmul3_list(complex *u, int first, int last, complex *z);
+    for(unsigned int i = 1; i < numbers->size(); i++){
+        answer = cmul3(answer, (*numbers)[i]);
+    }
+
+    return answer;
+}
 
 /************************************************************/
 /* Main Program                                             */
@@ -132,22 +142,20 @@ int main(int argc, char *argv[]) {
     ReadListOfNumbers(std::string(argv[1]), numbers);
 
     clock_t t0, t;             // used for timing functions
+    complex answer;
 
     t0 = clock();
-    //cmul4_list(v, 0, n-1, &z);
+    //answer = cmul4_list(numbers);
     t = clock() - t0;
 
     std::cout << "*** CMUL4 List ***" << std::endl;
     std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
+    printComplex(answer);
 
     // Time call to cmul3_list()
 
     t0 = clock();
-    complex answer = (*numbers)[0];
-
-    for(unsigned int i = 1; i < numbers->size(); i++){
-        answer = cmul3(answer, (*numbers)[i]);
-    }
+    answer = cmul3_list(numbers);
     t = clock() - t0;
 
     std::cout << "*** CMUL3 List ***" << std::endl;
@@ -157,12 +165,3 @@ int main(int argc, char *argv[]) {
     delete numbers;
     return 0;
 }
-
-/************************************************************/
-/* Function Implementations                                 */
-/************************************************************/
-
-//
-// TO BE WRITTEN: cmul4(), cmul3(), cmul4_list(), cmul3_list(),
-//                code to read data file
-//
