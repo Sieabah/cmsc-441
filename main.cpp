@@ -43,19 +43,30 @@ typedef struct complex_struct complex;
 // Complex four-multiply (four real multiplies)
 //   a, b - number to multiply
 //   z - return value (product)
-complex cmul4(complex x, complex y){
+complex cmul4(complex z1, complex z2){
+    complex z;
 
+    cpp_int r = (z1.real * z2.real - z1.imaginary * z2.imaginary);
+    cpp_int i = (z1.real * z2.imaginary + z1.imaginary * z2.real);
+
+    z.real = r;
+    z.imaginary = i;
+
+    return z;
 }
 
-complex cmul4_list(std::vector<complex> *numbers){
-    complex answer = (*numbers)[0];
-
-    for(unsigned int i = 1; i < numbers->size(); i++){
-        answer = cmul4(answer, (*numbers)[i]);
+// Recursively multiplies (4 real multiplication)
+// numbers - array to complex numbers to be multiplied
+// u - recursive multiplied complex number
+// index - current index in vector
+complex cmul4_list(std::vector<complex> *numbers, complex u, int index){
+    index++;
+    if(index < numbers->size()){
+        u = cmul4_list(numbers, cmul4(u, (*numbers)[index]), index);
     }
-
-    return answer;
+    return u;
 }
+
 
 // Complex three-multiply (three real multiplies)
 //   a, b - number to multiply
@@ -70,14 +81,16 @@ complex cmul3(complex x, complex y){
     return z;
 }
 
-complex cmul3_list(std::vector<complex> *numbers){
-    complex answer = (*numbers)[0];
-
-    for(unsigned int i = 1; i < numbers->size(); i++){
-        answer = cmul3(answer, (*numbers)[i]);
+// Recursively multiplies (3 real multiplication)
+// numbers - array to complex numbers to be multiplied
+// u - recursive multiplied complex number
+// index - current index in vector
+complex cmul3_list(std::vector<complex> *numbers,  complex u, int index){
+    index++;
+    if(index < numbers->size()){
+        u = cmul3_list(numbers, cmul3(u, (*numbers)[index]), index);
     }
-
-    return answer;
+    return u;
 }
 
 /************************************************************/
@@ -145,7 +158,7 @@ int main(int argc, char *argv[]) {
     complex answer;
 
     t0 = clock();
-    //answer = cmul4_list(numbers);
+    answer = cmul4_list(numbers, (*numbers)[0], 0);
     t = clock() - t0;
 
     std::cout << "*** CMUL4 List ***" << std::endl;
@@ -155,7 +168,7 @@ int main(int argc, char *argv[]) {
     // Time call to cmul3_list()
 
     t0 = clock();
-    answer = cmul3_list(numbers);
+    answer = cmul3_list(numbers, (*numbers)[0], 0);
     t = clock() - t0;
 
     std::cout << "*** CMUL3 List ***" << std::endl;
