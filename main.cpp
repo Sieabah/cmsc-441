@@ -1,7 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
+/**
+Contributors:
+	Christopher Sidell (csidell1@umbc.edu)
+	Joshua Standiford (jstand1@umbc.edu)
+*/
+
+#include <cstdio>
+#include <ctime>
+#include <cmath>
 
 #include <sys/stat.h>
 #include <vector>
@@ -25,9 +30,9 @@ inline bool file_exits(const std::string& name)
     return (stat (name.c_str(), &buffer) == 0);
 }
 
-/************************************************************/
-/* Complex type                                             */
-/************************************************************/
+/************************************************************
+ * Complex type                                             *
+ ************************************************************/
 
 struct complex_struct {
     cpp_int real; // real part
@@ -36,13 +41,12 @@ struct complex_struct {
 
 typedef struct complex_struct complex;
 
-/************************************************************/
-/* Prototypes                                               */
-/************************************************************/
-
-// Complex four-multiply (four real multiplies)
-//   a, b - number to multiply
-//   z - return value (product)
+/**
+ * Complex four-multiply (four real multiplies)
+ * @param x operand one
+ * @param y operand two
+ * @return
+ */
 complex cmul4(complex z1, complex z2){
     complex z;
 
@@ -55,10 +59,13 @@ complex cmul4(complex z1, complex z2){
     return z;
 }
 
-// Recursively multiplies (4 real multiplication)
-// numbers - array to complex numbers to be multiplied
-// u - recursive multiplied complex number
-// index - current index in vector
+/**
+ * Recursively multiplies (4 real multiplication)
+ * @param numbers array to complex numbers to be multiplied
+ * @param u recursive multiplied complex number
+ * @param index current index in vector
+ * @return
+ */
 complex cmul4_list(std::vector<complex> *numbers, complex u, int index){
     index++;
     if(index < numbers->size()){
@@ -67,9 +74,12 @@ complex cmul4_list(std::vector<complex> *numbers, complex u, int index){
     return u;
 }
 
-
-// Complex three-multiply (three real multiplies)
-//   a, b - number to multiply
+/**
+ * Complex three-multiply (three real multiplies)
+ * @param x operand one
+ * @param y operand two
+ * @return
+ */
 complex cmul3(complex x, complex y){
     complex z;
     cpp_int t = (x.real + x.imaginary) * (y.real + y.imaginary);
@@ -81,10 +91,13 @@ complex cmul3(complex x, complex y){
     return z;
 }
 
-// Recursively multiplies (3 real multiplication)
-// numbers - array to complex numbers to be multiplied
-// u - recursive multiplied complex number
-// index - current index in vector
+/**
+ * Recursively multiplies (3 real multiplication)
+ * @param numbers array to complex numbers to be multiplied
+ * @param u recursive multiplied complex number
+ * @param index current index in vector
+ * @return
+ */
 complex cmul3_list(std::vector<complex> *numbers,  complex u, int index){
     index++;
     if(index < numbers->size()){
@@ -97,6 +110,10 @@ complex cmul3_list(std::vector<complex> *numbers,  complex u, int index){
 /* Main Program                                             */
 /************************************************************/
 
+/**
+ * Print complex variable
+ * @param a Complex structure
+ */
 void printComplex(complex a){
     std::cout << "(" << a.real << ", "<< a.imaginary << ")" << std::endl;
 }
@@ -124,11 +141,12 @@ void ReadListOfNumbers(const std::string filepath, std::vector<complex> *numbers
         //Split the line on spaces
         std::istringstream df(line);
 
-        //Offset substring by one word
+        //Use input magic to make the strings into big nums
         cpp_int real;
         cpp_int imaginary;
         df >> real >> imaginary;
 
+        //Assemble the complex object
         complex a;
         a.real = real;
         a.imaginary = imaginary;
@@ -152,8 +170,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    //Read in list of numbers
     ReadListOfNumbers(std::string(argv[1]), numbers);
 
+    // Time call to cmul4_list()
     clock_t t0, t;             // used for timing functions
     complex answer;
 
@@ -166,7 +186,6 @@ int main(int argc, char *argv[]) {
     printComplex(answer);
 
     // Time call to cmul3_list()
-
     t0 = clock();
     answer = cmul3_list(numbers, (*numbers)[0], 0);
     t = clock() - t0;
