@@ -66,13 +66,14 @@ complex cmul4(complex z1, complex z2){
  * @param index current index in vector
  * @return
  */
-complex cmul4_list(std::vector<complex> *numbers, complex u, int index){
+complex cmul4_list(std::vector<complex> *numbers, complex u, int index, int limit){
     index++;
-    if(index < numbers->size()){
-        u = cmul4_list(numbers, cmul4(u, (*numbers)[index]), index);
+    if(index < limit){
+        u = cmul4_list(numbers, cmul4(u, (*numbers)[index]), index, limit);
     }
     return u;
 }
+
 
 /**
  * Complex three-multiply (three real multiplies)
@@ -96,12 +97,13 @@ complex cmul3(complex x, complex y){
  * @param numbers array to complex numbers to be multiplied
  * @param u recursive multiplied complex number
  * @param index current index in vector
+ * @param limit size of divide-and-conquer limit
  * @return
  */
-complex cmul3_list(std::vector<complex> *numbers,  complex u, int index){
+complex cmul3_list(std::vector<complex> *numbers,  complex u, int index, int limit){
     index++;
-    if(index < numbers->size()){
-        u = cmul3_list(numbers, cmul3(u, (*numbers)[index]), index);
+    if(index < limit){
+        u = cmul3_list(numbers, cmul3(u, (*numbers)[index]), index, limit);
     }
     return u;
 }
@@ -175,15 +177,18 @@ int main(int argc, char *argv[]) {
 
     // Time call to cmul4_list()
     clock_t t0, t;             // used for timing functions
-    complex answer;
+    complex answer, l, r;
+    int half = (numbers->size() / 2);
 
     t0 = clock();
-    answer = cmul4_list(numbers, (*numbers)[0], 0);
+    l = cmul4_list(numbers, (*numbers)[0], 0, half);
+    r = cmul4_list(numbers, (*numbers)[half], half, numbers->size());
+    answer = cmul4(l, r);
     t = clock() - t0;
 
     //std::cout << "*** CMUL4 List ***" << std::endl;
     //std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
-    //printComplex(answer);
+    printComplex(answer);
 
     if(argc >= 3 && *argv[2] == '4')
         std::cout << ((double) t)/CLOCKS_PER_SEC << std::endl;
@@ -191,12 +196,14 @@ int main(int argc, char *argv[]) {
 
     // Time call to cmul3_list()
     t0 = clock();
-    answer = cmul3_list(numbers, (*numbers)[0], 0);
+    l = cmul3_list(numbers, (*numbers)[0], 0, half);
+    r = cmul3_list(numbers, (*numbers)[half], half, numbers->size());
+    answer = cmul3(l, r);
     t = clock() - t0;
 
     //std::cout << "*** CMUL3 List ***" << std::endl;
     //std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
-    //printComplex(answer);
+    printComplex(answer);
 
     if(argc >= 3 && *argv[2] == '3')
         std::cout << ((double) t)/CLOCKS_PER_SEC << std::endl;
