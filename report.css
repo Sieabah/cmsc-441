@@ -1,0 +1,14 @@
+body {
+    font-size: 0.625em;
+}
+
+* {
+    width: 100%;
+}
+
+h2 { float: left; }
+
+img {
+    width: 50%;
+    float: left;
+}

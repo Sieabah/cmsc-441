@@ -5,6 +5,9 @@ import statistics as stat
 import tempfile
 from random import randint
 
+if len(sys.argv[1:]) <= 0:
+    print('test.py <executable>')
+    sys.exit(1)
 
 def run(fp, type):
     return subprocess.run([sys.argv[1], fp, type], stdout=subprocess.PIPE)
@@ -45,36 +48,36 @@ def genData(len, amt=50):
     return fp
 
 
-cmul3 = []
-cmul4 = []
+for bitlen in range(8,50):
+    cmul3 = []
+    cmul4 = []
 
-print('Generating Data')
-for length in range(1, 500):
-    fp = genData(length, 50)
+    print('Generating Data')
+    for multiplies in range(1, 500, 40):
+        fp = genData(bitlen, multiplies)
 
-    proc = run(fp, '3')
-    cmul3.append((length, float(proc.stdout)))
+        proc = run(fp, '3')
+        cmul3.append((multiplies, float(proc.stdout)))
 
-    proc = run(fp, '4')
-    cmul4.append((length, float(proc.stdout)))
+        proc = run(fp, '4')
+        cmul4.append((multiplies, float(proc.stdout)))
 
+    print('Graphing...')
+    import matplotlib.pyplot as plt
 
-print('Graphing...')
-import matplotlib.pyplot as plt
+    fig, ax = plt.subplots()
 
-fig, ax = plt.subplots()
+    x = [tup[0] for tup in cmul3]
+    y = [tup[1] for tup in cmul3]
+    plt.plot(x, y, label='cmul3')
 
-x = [tup[0] for tup in cmul3]
-y = [tup[1] for tup in cmul3]
-plt.plot(x, y, label='cmul3')
+    x = [tup[0] for tup in cmul4]
+    y = [tup[1] for tup in cmul4]
+    plt.plot(x, y, label='cmul4')
 
-x = [tup[0] for tup in cmul4]
-y = [tup[1] for tup in cmul4]
-plt.plot(x, y, label='cmul4')
+    ax.legend(loc='upper left')
+    ax.set_title("3-Multiply vs. 4-Multiply ("+str(bitlen)+"bits)")
+    ax.set_xlabel("# of multiplies")
+    ax.set_ylabel("Time")
 
-ax.legend(loc='upper left')
-ax.set_title("3-Multiply vs. 4-Multiply (50 bit)")
-ax.set_xlabel("# of bits")
-ax.set_ylabel("Time")
-
-plt.show()
+    plt.show()
