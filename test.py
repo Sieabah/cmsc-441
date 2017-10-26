@@ -2,7 +2,6 @@ import subprocess
 import sys
 import os
 import statistics as stat
-import tempfile
 from random import randint
 
 if len(sys.argv[1:]) <= 0:
@@ -48,19 +47,25 @@ def genData(len, amt=50):
     return fp
 
 
-for bitlen in range(8,50):
+for bitlen in [50]:#, 50, 60, 70, 80, 90, 100, 200]:
     cmul3 = []
     cmul4 = []
 
     print('Generating Data')
-    for multiplies in range(1, 500, 40):
+    for multiplies in range(1, 200):
         fp = genData(bitlen, multiplies)
 
-        proc = run(fp, '3')
-        cmul3.append((multiplies, float(proc.stdout)))
+        data = []
+        for _ in range(3):
+            data.append(float(run(fp, '3').stdout))
 
-        proc = run(fp, '4')
-        cmul4.append((multiplies, float(proc.stdout)))
+        cmul3.append((multiplies, sum(data)/len(data)))
+
+        data = []
+        for _ in range(3):
+            data.append(float(run(fp, '4').stdout))
+
+        cmul4.append((multiplies, sum(data)/len(data)))
 
     print('Graphing...')
     import matplotlib.pyplot as plt

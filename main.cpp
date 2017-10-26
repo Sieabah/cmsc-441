@@ -180,34 +180,35 @@ int main(int argc, char *argv[]) {
     complex answer, l, r;
     int half = (numbers->size() / 2);
 
-    t0 = clock();
-    l = cmul4_list(numbers, (*numbers)[0], 0, half);
-    r = cmul4_list(numbers, (*numbers)[half], half, numbers->size());
-    answer = cmul4(l, r);
-    t = clock() - t0;
+    if(argc >= 3 && *argv[2] == '4') {
+        t0 = clock();
+        l = cmul4_list(numbers, (*numbers)[0], 0, half);
+        r = cmul4_list(numbers, (*numbers)[half], half, numbers->size());
+        answer = cmul4(l, r);
+        t = clock() - t0;
 
-    //std::cout << "*** CMUL4 List ***" << std::endl;
-    //std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
-    printComplex(answer);
+        //std::cout << "*** CMUL4 List ***" << std::endl;
+        //std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
+        //printComplex(answer);
 
-    if(argc >= 3 && *argv[2] == '4')
-        std::cout << ((double) t)/CLOCKS_PER_SEC << std::endl;
+        std::cout << ((double) t) / CLOCKS_PER_SEC << std::endl;
+    }
 
 
-    // Time call to cmul3_list()
-    t0 = clock();
-    l = cmul3_list(numbers, (*numbers)[0], 0, half);
-    r = cmul3_list(numbers, (*numbers)[half], half, numbers->size());
-    answer = cmul3(l, r);
-    t = clock() - t0;
+    if(argc >= 3 && *argv[2] == '3') {
+        // Time call to cmul3_list()
+        t0 = clock();
+        l = cmul3_list(numbers, (*numbers)[0], 0, half);
+        r = cmul3_list(numbers, (*numbers)[half], half, numbers->size());
+        answer = cmul3(l, r);
+        t = clock() - t0;
 
-    //std::cout << "*** CMUL3 List ***" << std::endl;
-    //std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
-    printComplex(answer);
+        //std::cout << "*** CMUL3 List ***" << std::endl;
+        //std::cout << "time: " << ((double) t)/CLOCKS_PER_SEC << std::endl;
+        //printComplex(answer);
 
-    if(argc >= 3 && *argv[2] == '3')
-        std::cout << ((double) t)/CLOCKS_PER_SEC << std::endl;
-
+        std::cout << ((double) t) / CLOCKS_PER_SEC << std::endl;
+    }
     delete numbers;
     return 0;
 }

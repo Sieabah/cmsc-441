@@ -30,7 +30,7 @@
     
 ### Time Analysis Theoretical (2)
 
-< Fill this part Josh>
+( See related file analysis.pdf )
 
 ### Time Analysis Empirical (3)
 
