@@ -92,9 +92,10 @@ std::vector<char> read(std::string file, int len){
  * @return - int - length of greatest LCS
  */
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
-  //Clear L[n + 1][m + 1] with 0's
-  int L[n + 1][m + 1];
+    //Clear L[n + 1][m + 1] with 0's
+    int L[n + 1][m + 1];
     std::vector<char> LCS;
+    
     //Compute LCS matrix
     for(int i = 0; i <= n; i++){
         for(int j = 0; j <= m; j++){
