@@ -7,10 +7,11 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdio>
+#include <cstdlib>
 
+using namespace std;
 /******************************
  *     Function Prototypes    *
  ******************************/
@@ -30,8 +31,8 @@ int main(int argc, char *argv[]) {
         std::cout << "Program does not match testing signature." << std::endl;
         std::cout << "lcs arguments signature: - " << std::endl;
         std::cout << "<file 1> - .txt file containing first LCS string" << std::endl;
-        std::cout << "<file 2> - .txt file containing second LCS string" << std::endl;
         std::cout << "<n> - number of characters to parse from file 1" << std::endl;
+        std::cout << "<file 2> - .txt file containing second LCS string" << std::endl;
         std::cout << "<m> - number of characters to parse from file 2" << std::endl;
         return 0;
     }
@@ -128,7 +129,7 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
         std::cout << std::endl;
     }
     std::cout << std::endl;
-    */
+    //*/
 
     std::cout << std::endl;
     return L[n][m];
