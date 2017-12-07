@@ -1,4 +1,4 @@
-/**
+B77;20003;0c/**
  * @author: Joshua Standiford
  * @description:
  * Project 2 - LCS program
@@ -11,6 +11,7 @@
 #include <ctime>
 #include <cstdio>
 #include <cstdlib>
+
 
 using namespace std;
 /******************************
@@ -96,11 +97,25 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Clear L[n + 1][m + 1] with 0's
     int L[n + 1][m + 1];
     std::vector<char> LCS;
+
     
+    //Clear LCS matrix
+    #pragma omp parallel for
+    for(int k = 0; k <= n ; k++){
+      #pragma omp parallel for
+      for(int g = 0; g < m ; g++){
+	L[k][g] = 0;
+      }
+    }
+
     double t0 = omp_get_wtime();
+
     //Compute LCS matrix
+    //#pragma omp for
     for(int i = 0; i <= n; i++){
+      #pragma omp parallel for
         for(int j = 0; j <= m; j++){
+	  
             if(i == 0 || j == 0){
                 L[i][j] = 0;
             }
@@ -112,11 +127,11 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
             }
         }
     }
-    double t = omp_get_wtime() - t0;
 
+    double t = omp_get_wtime() - t0;
     printf("Runtime: %f\n", t);
     // Print table
-    
+    /*
     std::cout << std::endl;
 
     std::cout << " Matrix Visualization " << std::endl;
@@ -135,7 +150,7 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     }
     std::cout << std::endl;
     
-
     std::cout << std::endl;
+    */
     return L[n][m];
 }

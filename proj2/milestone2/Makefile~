@@ -23,4 +23,4 @@ testvbig:
 	./main test1.txt 10000 test2.txt 10000
 
 clean:
-	rm *.o
+	rm main

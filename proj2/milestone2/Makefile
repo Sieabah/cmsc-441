@@ -4,7 +4,7 @@ main: $(OBJS)
 	g++ -o main main.cpp -fopenmp
 
 
-default: main.o run clean
+default: clean main.o run
 
 
 main.o: main.cpp
@@ -23,4 +23,4 @@ testvbig:
 	./main test1.txt 10000 test2.txt 10000
 
 clean:
-	rm *.o
+	rm main
