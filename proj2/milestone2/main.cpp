@@ -18,21 +18,8 @@ using namespace std;
  *     Function Prototypes    *
  ******************************/
 
-
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 std::vector<char> read(std::string file, int len);
-
-
-/*
- * int x - horizontal adjustment
- * int y - vertical adjustment
- * int weight - value of LCS at point
- */
-struct point {
-  int x;
-  int y;
-  int weight;
-}
 
 /******************************
  *        Main Function       *
@@ -106,48 +93,44 @@ std::vector<char> read(std::string file, int len){
  */
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Clear L[n + 1][m + 1] with 0's
-    int L[n + 1][m + 1];
+    int L[n + 1][m + 1] = {};
     std::vector<char> LCS;
+    std::cout << n << m << std::endl;
 
-    
     //Clear LCS matrix
-    #pragma omp parallel for
-    for(int k = 0; k <= n ; k++){
-      #pragma omp parallel for
-      for(int g = 0; g < m ; g++){
-	L[k][g] = 0;
-      }
-    }
+    //#pragma omp parallel for
+    //for(int k = 0; k <= n ; k++){
+    //  #pragma omp parallel for
+    //    for(int g = 0; g <= m ; g++){
+	//    L[k][g] = 0;
+    //  }
+    //}
 
-    std::vector<point> coords;
-
-
-    double t0 = omp_get_wtime();
+    //double t0 = omp_get_wtime();
 
     //Compute LCS matrix
     //#pragma omp for
-    /*
-    for(int i = 0; i <= n; i++){
-        #pragma omp parallel for
-        for(int j = 0; j <= m; j++){
-	  
+
+    for(int i = 0; i < n; i++){
+        //#pragma omp parallel for
+        std::cout << i <<std::endl;
+
+        for(int j = 0; j < m; j++){
+
             if(i == 0 || j == 0){
                 L[i][j] = 0;
             }
             else if(X[i - 1] == Y[j - 1]){
                 L[i][j] = L[i - 1][j - 1] + 1;
-		
-	    }
+	        }
             else{
                 L[i][j] = std::max(L[i - 1][j], L[i][j - 1]);
             }
-	    
-
         }
     }
-    */
-    double t = omp_get_wtime() - t0;
-    printf("Runtime: %f\n", t);
+
+    //double t = omp_get_wtime() - t0;
+    //printf("Runtime: %f\n", t);
     // Print table
     /*
     std::cout << std::endl;
@@ -167,8 +150,31 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
         std::cout << std::endl;
     }
     std::cout << std::endl;
-    
+
     std::cout << std::endl;
     */
+
+    // There will be ROW+COL-1 lines in the output
+    /*
+    for (int line=1; line<=(m + n -1); line++)
+    {
+        /* Get column index of the first element in this line of output.
+           The index is 0 for first ROW lines and line - ROW for remaining
+           lines
+        int start_col =  std::max(0, line-m);
+
+        /* Get count of elements in this line. The count of elements is
+           equal to minimum of line number, COL-start_col and ROW
+        int count = std::min(line, std::min((n-start_col), n));
+
+        /* Print elements of this line
+        for (int j=0; j<count; j++)
+            printf("%5d ", L[std::min(n, line)-j-1][start_col+j]);
+
+        /* Ptint elements of next diagonal on next line
+        printf("\n");
+    }
+    */
+
     return L[n][m];
 }
