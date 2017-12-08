@@ -23,6 +23,17 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 std::vector<char> read(std::string file, int len);
 
 
+/*
+ * int x - horizontal adjustment
+ * int y - vertical adjustment
+ * int weight - value of LCS at point
+ */
+struct point {
+  int x;
+  int y;
+  int weight;
+}
+
 /******************************
  *        Main Function       *
  ******************************/
@@ -107,6 +118,8 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 	L[k][g] = 0;
       }
     }
+
+    std::vector<point> coords;
 
 
     double t0 = omp_get_wtime();
