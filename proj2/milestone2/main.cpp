@@ -96,6 +96,14 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     int L[n + 1][m + 1];
     std::vector<char> LCS;
 
+
+    for(int b = 0; b <= n; b++){
+	for(int d = 0; d <= m; d++){
+	  L[b][d] = 0;
+	}
+      }
+
+
     //Compute LCS matrix
     for(int i = 0; i <= n; i++){
         for(int j = 0; j <= m; j++){
@@ -122,38 +130,31 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     }
     std::cout << std::endl;
 
-    for(int i = 0; i < n + 1; i++){
+    for(int i = 0; i <= m; i++){
         std::cout << Y[i] << " ";
-        for(int j = 0; j < m + 1; j++){
+        for(int j = 0; j <= n; j++){
             std::cout << L[i][j] << " ";
         }
         std::cout << std::endl;
     }
     std::cout << std::endl;
-    //
+    
+    //print matrix diagonally
+    for (int line=1; line<=(m + n); line++){
+
+        int start_col =  std::max(0, line-n);
 
 
-
-    /*
-     for (int line=1; line<=(m + n -1); line++)
-    {
-        /* Get column index of the first element in this line of output.
-           The index is 0 for first ROW lines and line - ROW for remaining
-           lines
-        int start_col =  std::max(0, line-m);
-
-        /* Get count of elements in this line. The count of elements is
-           equal to minimum of line number, COL-start_col and ROW
         int count = std::min(line, std::min((n-start_col), n));
 
-        /* Print elements of this line
+
         for (int j=0; j<count; j++)
             printf("%5d ", L[std::min(n, line)-j-1][start_col+j]);
 
-        /* Ptint elements of next diagonal on next line
+
         printf("\n");
     }
-     */
+     
     std::cout << std::endl;
     return L[n][m];
 }
