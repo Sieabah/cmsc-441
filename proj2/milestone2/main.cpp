@@ -97,7 +97,10 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     std::vector<char> LCS;
 
 
+    
+
     //Compute LCS matrix
+    
     for(int i = 0; i <= n; i++){
         for(int j = 0; j <= m; j++){
             if(i == 0 || j == 0){
@@ -111,57 +114,50 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
             }
         }
     }
-
-    // Print table
-    /*
-    std::cout << std::endl;
-
-    std::cout << " Matrix Visualization " << std::endl;
-    std::cout << "  ";
-    for(int k = 0; k < n; k++){
-        std::cout << X[k] << " ";
-    }
-    std::cout << std::endl;
-
-    for(int i = 0; i <= m; i++){
-        std::cout << Y[i] << " ";
-        for(int j = 0; j <= n; j++){
-            std::cout << L[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-    */
+    
 
     int ROW = n;
     int COL = m;
 
     
+    //Parallel LCS implementation
+    for (int i = 0; i <= (ROW + COL - 1); i++){
+
+	int start_col = std::max(0, i - ROW);
+	int count = std::min(i, std::min((COL - start_col), ROW));
+
+	#pragma omp parallel for
+	for (int j = 0; j < count; j++){
+	  
+	  printf("%5d ", L[std::min(ROW, i) - j][start_col + j]);
+	  /*
+	  if(i == 0 || j == 0){
+	    L[std::min(ROW, i) - j][start_col + j] = 0;
+	  }
+	  else if(X[i - 1] == Y[j - 1]){
+	      L[std::min(ROW, i) - j][start_col + j] =  L[std::min(ROW, i) - j - 1][start_col + j - 1] + 1;
+	  }
+	  else{
+	    L[std::min(ROW, i) - j][start_col + j] = std::max( L[std::min(ROW, i) - j - 1][start_col + j],  L[std::min(ROW, i) - j][start_col + j - 1]);
+	  }
+	  */
+	}
+
+	printf("\n");
+      }
+    
+
+
+    std::cout << "\n\n\n";
+
     for (int i=0; i< ROW; i++)
       {
-	for (int j=0; j< COL; j++)
-	  printf("%5d ", L[i][j]);
-	printf("\n");
+        for (int j=0; j< COL; j++)
+          printf("%5d ", L[i][j]);
+        printf("\n");
       }
 
-    std::cout<< "\n\n\n";
 
-    for (int line=1; line<=(ROW + COL -1); line++)
-      {
-
-	int start_col = std::max(0, line-ROW);
-
-	int count = std::min(line, std::min((COL-start_col), ROW));
-
-
-	for (int j=0; j<count; j++)
-	  printf("%5d ", L[std::min(ROW, line)-j-1][start_col+j]);
-
-
-	printf("\n");
-      }
-    
-    
     std::cout << std::endl;
     return L[n][m];
 }
