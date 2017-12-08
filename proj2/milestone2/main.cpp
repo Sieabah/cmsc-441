@@ -136,7 +136,7 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     int ROW = n;
     int COL = m;
 
-    /*
+    
     for (int i=0; i< ROW; i++)
       {
 	for (int j=0; j< COL; j++)
@@ -148,23 +148,19 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 
     for (int line=1; line<=(ROW + COL -1); line++)
       {
-	/* Get column index of the first element in this line of output.
-	   The index is 0 for first ROW lines and line - ROW for remaining
-	   lines *
+
 	int start_col = std::max(0, line-ROW);
 
-	/* Get count of elements in this line. The count of elements is
-	   equal to minimum of line number, COL-start_col and ROW *
 	int count = std::min(line, std::min((COL-start_col), ROW));
 
-	/* Print elements of this line *
+
 	for (int j=0; j<count; j++)
 	  printf("%5d ", L[std::min(ROW, line)-j-1][start_col+j]);
 
-	/* Ptint elements of next diagonal on next line *
+
 	printf("\n");
       }
-    */
+    
     
     std::cout << std::endl;
     return L[n][m];
