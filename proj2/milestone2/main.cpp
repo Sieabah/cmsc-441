@@ -108,13 +108,6 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
       }
     }
 
-    
-    for(int i = 0; i <= n; i++){      
-      std::cout << i << std::endl;
-    }
-    for(int j = 0; j <= m; j++){
-      std::cout << j;
-    }
 
     double t0 = omp_get_wtime();
 
