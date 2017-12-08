@@ -4,7 +4,6 @@
  * Project 2 - LCS program
  */
 
-#include <omp.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -12,14 +11,15 @@
 #include <cstdio>
 #include <cstdlib>
 
-
 using namespace std;
 /******************************
  *     Function Prototypes    *
  ******************************/
 
+
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 std::vector<char> read(std::string file, int len);
+
 
 /******************************
  *        Main Function       *
@@ -93,46 +93,26 @@ std::vector<char> read(std::string file, int len){
  */
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Clear L[n + 1][m + 1] with 0's
-    int L[n + 1][m + 1] = {};
+    int L[n + 1][m + 1];
     std::vector<char> LCS;
-    std::cout << n << m << std::endl;
-
-    //Clear LCS matrix
-    //#pragma omp parallel for
-    //for(int k = 0; k <= n ; k++){
-    //  #pragma omp parallel for
-    //    for(int g = 0; g <= m ; g++){
-	//    L[k][g] = 0;
-    //  }
-    //}
-
-    //double t0 = omp_get_wtime();
 
     //Compute LCS matrix
-    //#pragma omp for
-
-    for(int i = 0; i < n; i++){
-        //#pragma omp parallel for
-        std::cout << i <<std::endl;
-
-        for(int j = 0; j < m; j++){
-
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; j <= m; j++){
             if(i == 0 || j == 0){
                 L[i][j] = 0;
             }
             else if(X[i - 1] == Y[j - 1]){
                 L[i][j] = L[i - 1][j - 1] + 1;
-	        }
+            }
             else{
                 L[i][j] = std::max(L[i - 1][j], L[i][j - 1]);
             }
         }
     }
 
-    //double t = omp_get_wtime() - t0;
-    //printf("Runtime: %f\n", t);
     // Print table
-    /*
+
     std::cout << std::endl;
 
     std::cout << " Matrix Visualization " << std::endl;
@@ -150,13 +130,12 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
         std::cout << std::endl;
     }
     std::cout << std::endl;
+    //
 
-    std::cout << std::endl;
-    */
 
-    // There will be ROW+COL-1 lines in the output
+
     /*
-    for (int line=1; line<=(m + n -1); line++)
+     for (int line=1; line<=(m + n -1); line++)
     {
         /* Get column index of the first element in this line of output.
            The index is 0 for first ROW lines and line - ROW for remaining
@@ -174,7 +153,7 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
         /* Ptint elements of next diagonal on next line
         printf("\n");
     }
-    */
-
+     */
+    std::cout << std::endl;
     return L[n][m];
 }
