@@ -103,7 +103,9 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     
     for(int i = 0; i <= n; i++){
         for(int j = 0; j <= m; j++){
-            if(i == 0 || j == 0){
+	  L[i][j] = 0;
+	    /*
+	  if(i == 0 || j == 0){
                 L[i][j] = 0;
             }
             else if(X[i - 1] == Y[j - 1]){
@@ -112,6 +114,8 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
             else{
                 L[i][j] = std::max(L[i - 1][j], L[i][j - 1]);
             }
+
+	  */
         }
     }
     
@@ -124,12 +128,13 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     for (int i = 0; i <= (ROW + COL - 1); i++){
 
 	int start_col = std::max(0, i - ROW);
+      
 	int count = std::min(i, std::min((COL - start_col), ROW));
 
 	#pragma omp parallel for
 	for (int j = 0; j < count; j++){
-	  
-	  printf("%5d ", L[std::min(ROW, i) - j][start_col + j]);
+	  printf("(%d, %d)", std::min(ROW, i) - j - 1, start_col + j);
+	  //printf("%5d ", L[std::min(ROW, i) - j][start_col + j]);
 	  /*
 	  if(i == 0 || j == 0){
 	    L[std::min(ROW, i) - j][start_col + j] = 0;
