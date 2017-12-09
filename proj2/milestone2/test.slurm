@@ -11,4 +11,4 @@
 
 export KMP_AFFINITY="verbose,compact"
 export OMP_NUM_THREADS=8
-srun ./main test1.txt 10000 test2.txt 10000
+srun ./main test1.txt 25000 test2.txt 25000
