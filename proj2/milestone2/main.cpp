@@ -17,7 +17,7 @@ using namespace std;
  *     Function Prototypes    *
  ******************************/
 
-
+int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 std::vector<char> read(std::string file, int len);
 
@@ -52,7 +52,9 @@ int main(int argc, char *argv[]) {
     Y = read(file2, m);
 
     //Call LCS
-    std::cout << "LCS is " << lcs(X, Y, n, m) << std::endl;
+    std::cout << "Serial LCS is " << lcs(X, Y, n, m) << std::endl;
+    std::cout << "Parallel LCS is " << parallel_lcs(X, Y, n, m) << std::endl;
+
     return 0;
 }
 
@@ -92,7 +94,7 @@ std::vector<char> read(std::string file, int len){
  * @param n2 - length of LCS file 2
  * @return - int - length of greatest LCS
  */
-int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
+int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Clear L[n + 1][m + 1] with 0's
     int L[n + 1][m + 1];
     std::vector<char> LCS;
@@ -171,4 +173,40 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 
     printf("Total time: %f\n", t);
     return L[n - 1][m - 1];
+}
+
+/**
+ * LCS
+ * @param X - char array of LCS file 1
+ * @param Y - char array of LCS file 2
+ * @param n1 - length of LCS file 1
+ * @param n2 - length of LCS file 2
+ * @return - int - length of greatest LCS
+ */
+int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
+  //Clear L[n + 1][m + 1] with 0's
+  int L[n + 1][m + 1];
+  
+  double t0 = omp_get_wtime();
+
+  //Compute LCS matrix
+  for(int i = 0; i <= n; i++){
+    for(int j = 0; j <= m; j++){
+      if(i == 0 || j == 0){
+	L[i][j] = 0;
+      }
+      else if(X[i - 1] == Y[j - 1]){
+	L[i][j] = L[i - 1][j - 1] + 1;
+      }
+      else{
+	L[i][j] = std::max(L[i - 1][j], L[i][j - 1]);
+      }
+    }
+  }
+  
+  double t = omp_get_wtime() - t0;
+
+  printf("Total time: %f\n", t);
+
+  return L[n][m];
 }
