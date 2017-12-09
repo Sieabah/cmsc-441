@@ -10,6 +10,7 @@
 #include <ctime>
 #include <cstdio>
 #include <cstdlib>
+#include <omp.h>
 
 using namespace std;
 /******************************
@@ -122,7 +123,7 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 
     int ROW = n;
     int COL = m;
-
+    double t0 = omp_get_wtime();
     
     //Parallel LCS implementation
     for (int i = 0; i <= (ROW + COL - 1); i++){
@@ -131,38 +132,43 @@ int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
       
 	int count = std::min(i, std::min((COL - start_col), ROW));
 
+	//	std::cout << X[i - 1] << std::endl;
+
 	#pragma omp parallel for
 	for (int j = 0; j < count; j++){
-	  printf("(%d, %d)", std::min(ROW, i) - j - 1, start_col + j);
-	  //printf("%5d ", L[std::min(ROW, i) - j][start_col + j]);
-	  /*
-	  if(i == 0 || j == 0){
-	    L[std::min(ROW, i) - j][start_col + j] = 0;
+	  
+	  int l = std::min(ROW, i);
+	  int r = start_col + j;
+
+
+	  if(X[l - j - 1] == Y[r]){
+	    if(l - j - 1 == 0 || r == 0){
+	      L[l - j - 1][r] = 1;
+	    }
+	    else{
+	      L[l - j - 1][r] =  L[l - j - 2][r - 1] + 1;
+	    }
 	  }
-	  else if(X[i - 1] == Y[j - 1]){
-	      L[std::min(ROW, i) - j][start_col + j] =  L[std::min(ROW, i) - j - 1][start_col + j - 1] + 1;
-	  }
+	  //propagate values from the max of left or top
 	  else{
-	    L[std::min(ROW, i) - j][start_col + j] = std::max( L[std::min(ROW, i) - j - 1][start_col + j],  L[std::min(ROW, i) - j][start_col + j - 1]);
+	    if(l - j - 1 == 0 && r == 0){
+	      L[l - j - 1][r] = 0;
+	    }
+	    else if(l - j - 1 == 0){
+	      L[l - j - 1][r] =  L[l - j - 1][r - 1];
+	    }
+	    else if(r == 0){
+	      L[l - j - 1][r] =  L[l - j - 2][r];
+	    }
+	    else{
+	      L[l - j - 1][r] = std::max( L[l - j - 2][r],  L[l - j - 1][r - 1]);
+	    }
 	  }
-	  */
 	}
-
-	printf("\n");
-      }
+    }
     
+    double t = omp_get_wtime() - t0;
 
-
-    std::cout << "\n\n\n";
-
-    for (int i=0; i< ROW; i++)
-      {
-        for (int j=0; j< COL; j++)
-          printf("%5d ", L[i][j]);
-        printf("\n");
-      }
-
-
-    std::cout << std::endl;
-    return L[n][m];
+    printf("Total time: %f\n", t);
+    return L[n - 1][m - 1];
 }
