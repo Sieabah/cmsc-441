@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=proj2-cpu4
-#SBATCH --output out/cpu4.out
-#SBATCH --error err/cpu4.err
+#SBATCH --output cpu4.out
+#SBATCH --error cpu4.err
 #SBATCH --partition=batch
 #SBATCH --qos=short
 #SBATCH --constraint=hpcf2010
