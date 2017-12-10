@@ -1,0 +1,5 @@
+How to run on maya:
+
+You can submit the slurm files independently.  Or you can use the bash script created to automatically submit all the slurm files.  
+
+./

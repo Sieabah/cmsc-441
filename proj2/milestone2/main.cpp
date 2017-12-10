@@ -1,5 +1,5 @@
 /**
- * @author: Joshua Standiford
+ * @author: Joshua Standiford, Chris Sidell
  * @description:
  * Project 2 - LCS program
  */
@@ -52,9 +52,12 @@ int main(int argc, char *argv[]) {
     Y = read(file2, m);
     
     //Call LCS
+    std::cout << "\nSubmitting LCS with files " << file1 << " " << file2 << " of length " << n << " by " << m << std::endl;
+    std::cout << std::endl;
     std::cout << "Serial LCS is " << lcs(X, Y, n, m) << std::endl;
+    std::cout << "\n";
     std::cout << "Parallel LCS is " << parallel_lcs(X, Y, n, m) << std::endl;
-
+    std::cout << "\n";
     return 0;
 }
 
@@ -87,7 +90,7 @@ std::vector<char> read(std::string file, int len){
 }
 
 /**
- * LCS
+ * parallel-lcs
  * @param X - char array of LCS file 1
  * @param Y - char array of LCS file 2
  * @param n1 - length of LCS file 1
@@ -98,54 +101,43 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Clear L[n + 1][m + 1] with 0's
     int L[n + 1][m + 1];
 
-    //Compute LCS matrix
-    for(int i = 0; i <= n; i++){
-        for(int j = 0; j <= m; j++){
-	  L[i][j] = 0;
-        }
-    }
-    
-
-    int ROW = n;
-    int COL = m;
     double t0 = omp_get_wtime();
     
     //Parallel LCS implementation
-    for (int i = 0; i <= (ROW + COL - 1); i++){
+    for (int i = 0; i <= (n + m - 1); i++){
 
-	int start_col = std::max(0, i - ROW);
-      
-	int count = std::min(i, std::min((COL - start_col), ROW));
-
+	int col = std::max(0, i - n);
+      	int size = std::min(i, std::min((m - col), n));
 
 	#pragma omp parallel for
-	for (int j = 0; j < count; j++){
+	for (int j = 0; j < size; j++){
+
+	  int l = std::min(n, i);
+	  int r = col + j;
+	  int x = l - j - 1;
 	  
-	  int l = std::min(ROW, i);
-	  int r = start_col + j;
-
-
-	  if(X[l - j - 1] == Y[r]){
-	    if(l - j - 1 == 0 || r == 0){
-	      L[l - j - 1][r] = 1;
+	  //if letters are the same, propagate values down diagonally
+	  if(X[x] == Y[r]){
+	    if(x == 0 || r == 0){
+	      L[x][r] = 1;
 	    }
 	    else{
-	      L[l - j - 1][r] =  L[l - j - 2][r - 1] + 1;
+	      L[x][r] =  L[x - 1][r - 1] + 1;
 	    }
 	  }
 	  //propagate values from the max of left or top
 	  else{
-	    if(l - j - 1 == 0 && r == 0){
-	      L[l - j - 1][r] = 0;
+	    if(x == 0 && r == 0){
+	      L[x][r] = 0;
 	    }
 	    else if(l - j - 1 == 0){
-	      L[l - j - 1][r] =  L[l - j - 1][r - 1];
+	      L[x][r] =  L[x][r - 1];
 	    }
 	    else if(r == 0){
-	      L[l - j - 1][r] =  L[l - j - 2][r];
+	      L[x][r] =  L[x - 1][r];
 	    }
 	    else{
-	      L[l - j - 1][r] = std::max( L[l - j - 2][r],  L[l - j - 1][r - 1]);
+	      L[x][r] = std::max( L[x - 1][r],  L[x][r - 1]);
 	    }
 	  }
 	}
