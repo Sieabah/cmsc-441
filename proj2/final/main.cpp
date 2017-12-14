@@ -177,12 +177,7 @@ int mem_parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Memory Efficient LCS
     int next[max_arr];
     int last[max_arr];
-
-    for(int p = 0; p < max_arr; p++){
-      next[p] = 0;
-      last[p] = 0;
-    }
-
+    
     double t0 = omp_get_wtime();
     
     //Parallel LCS implementation
@@ -192,12 +187,7 @@ int mem_parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     int size = std::min(i, std::min((m - col), n));
 
     int tmp[max_arr];
-
-    #pragma omp parallel for
-    for(int u = 0; u < max_arr; u++){
-      tmp[u] = 0;
-    }
-
+    
     #pragma omp parallel for
     for (int j = 0; j < size; j++){
 
@@ -255,8 +245,7 @@ int mem_parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
   //Clear L[n + 1][m + 1] with 0's
   int L[n + 1][m + 1];
-  std::vector<char> LCS(10);
-
+  
   double t0 = omp_get_wtime();
 
   //Compute LCS matrix
