@@ -1,0 +1,324 @@
+
+Submitting LCS with files test1.txt test2.txt of length 10 by 10
+
+Total time: 0.000005
+Serial LCS is 4
+
+Total time: 0.000028
+Parallel LCS is 4
+
+Total time: 0.000018
+Memory Efficient LCS is 4
+
+
+Submitting LCS with files test1.txt test2.txt of length 25 by 25
+
+Total time: 0.000026
+Serial LCS is 13
+
+Total time: 0.000072
+Parallel LCS is 13
+
+Total time: 0.000059
+Memory Efficient LCS is 13
+
+
+Submitting LCS with files test1.txt test2.txt of length 50 by 50
+
+Total time: 0.000102
+Serial LCS is 30
+
+Total time: 0.000198
+Parallel LCS is 30
+
+Total time: 0.000184
+Memory Efficient LCS is 30
+
+
+Submitting LCS with files test1.txt test2.txt of length 75 by 75
+
+Total time: 0.000230
+Serial LCS is 45
+
+Total time: 0.000490
+Parallel LCS is 45
+
+Total time: 0.000364
+Memory Efficient LCS is 45
+
+
+Submitting LCS with files test1.txt test2.txt of length 100 by 100
+
+Total time: 0.000530
+Serial LCS is 62
+
+Total time: 0.000842
+Parallel LCS is 62
+
+Total time: 0.000612
+Memory Efficient LCS is 62
+
+
+Submitting LCS with files test1.txt test2.txt of length 175 by 175
+
+Total time: 0.001549
+Serial LCS is 111
+
+Total time: 0.002209
+Parallel LCS is 111
+
+Total time: 0.001837
+Memory Efficient LCS is 111
+
+
+Submitting LCS with files test1.txt test2.txt of length 250 by 250
+
+Total time: 0.002951
+Serial LCS is 158
+
+Total time: 0.002874
+Parallel LCS is 158
+
+Total time: 0.002046
+Memory Efficient LCS is 158
+
+
+Submitting LCS with files test1.txt test2.txt of length 500 by 500
+
+Total time: 0.010223
+Serial LCS is 322
+
+Total time: 0.008859
+Parallel LCS is 322
+
+Total time: 0.007218
+Memory Efficient LCS is 322
+
+
+Submitting LCS with files test1.txt test2.txt of length 750 by 750
+
+Total time: 0.017730
+Serial LCS is 489
+
+Total time: 0.016808
+Parallel LCS is 489
+
+Total time: 0.014777
+Memory Efficient LCS is 489
+
+
+Submitting LCS with files test1.txt test2.txt of length 1000 by 1000
+
+Total time: 0.026780
+Serial LCS is 652
+
+Total time: 0.030712
+Parallel LCS is 652
+
+Total time: 0.027438
+Memory Efficient LCS is 652
+
+
+Submitting LCS with files test1.txt test2.txt of length 1250 by 1250
+
+Total time: 0.036291
+Serial LCS is 815
+
+Total time: 0.048662
+Parallel LCS is 815
+
+Total time: 0.040597
+Memory Efficient LCS is 815
+
+
+Submitting LCS with files test1.txt test2.txt of length 1500 by 1500
+
+Total time: 0.050683
+Serial LCS is 978
+
+Total time: 0.071463
+Parallel LCS is 978
+
+Total time: 0.058473
+Memory Efficient LCS is 978
+
+
+Submitting LCS with files test1.txt test2.txt of length 1750 by 1750
+
+Total time: 0.067075
+Serial LCS is 1143
+
+Total time: 0.098836
+Parallel LCS is 1143
+
+Total time: 0.079248
+Memory Efficient LCS is 1143
+
+
+Submitting LCS with files test1.txt test2.txt of length 2000 by 2000
+
+Total time: 0.088486
+Serial LCS is 1302
+
+Total time: 0.130177
+Parallel LCS is 1302
+
+Total time: 0.103184
+Memory Efficient LCS is 1302
+
+
+Submitting LCS with files test1.txt test2.txt of length 2250 by 2250
+
+Total time: 0.109203
+Serial LCS is 1463
+
+Total time: 0.164840
+Parallel LCS is 1463
+
+Total time: 0.130983
+Memory Efficient LCS is 1463
+
+
+Submitting LCS with files test1.txt test2.txt of length 2500 by 2500
+
+Total time: 0.131658
+Serial LCS is 1622
+
+Total time: 0.203756
+Parallel LCS is 1622
+
+Total time: 0.162043
+Memory Efficient LCS is 1622
+
+
+Submitting LCS with files test1.txt test2.txt of length 5000 by 5000
+
+Total time: 0.511447
+Serial LCS is 3253
+
+Total time: 0.917295
+Parallel LCS is 3253
+
+Total time: 0.655244
+Memory Efficient LCS is 3253
+
+
+Submitting LCS with files test1.txt test2.txt of length 7500 by 7500
+
+Total time: 1.143910
+Serial LCS is 4892
+
+Total time: 2.138821
+Parallel LCS is 4892
+
+Total time: 1.480399
+Memory Efficient LCS is 4892
+
+
+Submitting LCS with files test1.txt test2.txt of length 10000 by 10000
+
+Total time: 2.032315
+Serial LCS is 6521
+
+Total time: 3.841368
+Parallel LCS is 6521
+
+Total time: 2.651649
+Memory Efficient LCS is 6521
+
+
+Submitting LCS with files test1.txt test2.txt of length 12500 by 12500
+
+Total time: 3.170787
+Serial LCS is 8156
+
+Total time: 6.325828
+Parallel LCS is 8156
+
+Total time: 4.103374
+Memory Efficient LCS is 8156
+
+
+Submitting LCS with files test1.txt test2.txt of length 15000 by 15000
+
+Total time: 4.567589
+Serial LCS is 9799
+
+Total time: 9.264918
+Parallel LCS is 9799
+
+Total time: 5.960758
+Memory Efficient LCS is 9799
+
+
+Submitting LCS with files test1.txt test2.txt of length 17500 by 17500
+
+Total time: 6.217164
+Serial LCS is 11443
+
+Total time: 12.879671
+Parallel LCS is 11443
+
+Total time: 8.056751
+Memory Efficient LCS is 11443
+
+
+Submitting LCS with files test1.txt test2.txt of length 20000 by 20000
+
+Total time: 8.105185
+Serial LCS is 13080
+
+Total time: 17.189502
+Parallel LCS is 13080
+
+Total time: 10.496159
+Memory Efficient LCS is 13080
+
+
+Submitting LCS with files test1.txt test2.txt of length 22500 by 22500
+
+Total time: 10.284483
+Serial LCS is 14715
+
+Total time: 22.577094
+Parallel LCS is 14715
+
+Total time: 13.567096
+Memory Efficient LCS is 14715
+
+
+Submitting LCS with files test1.txt test2.txt of length 25000 by 25000
+
+Total time: 12.656203
+Serial LCS is 16340
+
+Total time: 30.258455
+Parallel LCS is 16340
+
+Total time: 16.517959
+Memory Efficient LCS is 16340
+
+
+Submitting LCS with files test1.txt test2.txt of length 27500 by 27500
+
+Total time: 15.351078
+Serial LCS is 17976
+
+Total time: 36.305059
+Parallel LCS is 17976
+
+Total time: 19.970820
+Memory Efficient LCS is 17976
+
+
+Submitting LCS with files test1.txt test2.txt of length 30000 by 30000
+
+Total time: 18.205795
+Serial LCS is 19609
+
+Total time: 44.994047
+Parallel LCS is 19609
+
+Total time: 23.723062
+Memory Efficient LCS is 19609
+
