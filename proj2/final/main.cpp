@@ -127,6 +127,11 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 	int col = std::max(0, i - n);
       	int size = std::min(i, std::min((m - col), n));
 
+	int tmp[biggest];
+
+	for(int u = 0; u < biggest; u++){
+	  tmp[u] = 0;
+	}
 
 	#pragma omp parallel for
 	for (int j = 0; j < size; j++){
@@ -140,12 +145,16 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 	    if(x == 0 || r == 0){
 	    
 	      L[x][r] = 1;
-	  
+
+
+	      //mem
+	      tmp[x] = 1;
 	    }
 	    else{
 	      L[x][r] =  L[x - 1][r - 1] + 1;
 	      
-	    
+	      //mem
+	      tmp[x] = last[x - 1] + 1;
 	    }
 	  }
 	  //propagate values from the max of left or top
@@ -153,29 +162,40 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 	    if(x == 0 && r == 0){
 	      L[x][r] = 0;
 	      
+	      //mem
+	      tmp[x] = 0;
 	    }
 	    else if(x == 0){
 	      L[x][r] =  L[x][r - 1];
 	      
+	      //mem
+	      tmp[x] = next[x];
 	    }
 	    else if(r == 0){
 	      L[x][r] =  L[x - 1][r];
 	    
+	      //mem
+	      tmp[x] = next[x - 1];
 	    }
 	    else{
 	      L[x][r] = std::max( L[x - 1][r],  L[x][r - 1]);
 	    
+	      //mem
+	      tmp[x] = std::max(next[x - 1], next[x]);
 	    }
 	  }
 
 	}
-
-
-	//memcpy(last, next, sizeof last);
-
+	
+	//copy over memory
+	memcpy(last, next, sizeof last);
+	memcpy(next, tmp, sizeof next);
     }
     
+    
     double t = omp_get_wtime() - t0;
+
+    std::cout << "Mem LCS : " << next[biggest - 1] << std::endl;
 
     printf("Total time: %f\n", t);
 
@@ -194,7 +214,8 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
   //Clear L[n + 1][m + 1] with 0's
   int L[n + 1][m + 1];
-  
+  std::vector<char> LCS(10);
+
   double t0 = omp_get_wtime();
 
   //Compute LCS matrix
