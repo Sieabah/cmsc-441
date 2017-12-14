@@ -18,6 +18,7 @@ using namespace std;
  *     Function Prototypes    *
  ******************************/
 
+int mem_parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 int lcs(std::vector<char> X, std::vector<char> Y, int n, int m);
 std::vector<char> read(std::string file, int len);
@@ -104,23 +105,6 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //Clear L[n + 1][m + 1] with 0's
     int L[n + 1][m + 1];
 
-    //Largest diagonal is the max the smallest between m and n
-    int biggest = std::max(m,n);
-
-
-    //Memory Efficient LCS
-    int next[biggest];
-    int last[biggest];
-
-    for(int p = 0; p < biggest; p++){
-      next[p] = 0;
-      last[p] = 0;
-    }
-
-    //memcpy(first, last, sizeof first);
-
-
-
     double t0 = omp_get_wtime();
     
     //Parallel LCS implementation
@@ -128,12 +112,6 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 
 	int col = std::max(0, i - n);
       	int size = std::min(i, std::min((m - col), n));
-
-	int tmp[biggest];
-
-	for(int u = 0; u < biggest; u++){
-	  tmp[u] = 0;
-	}
 
 	#pragma omp parallel for
 	for (int j = 0; j < size; j++){
@@ -145,63 +123,36 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 	  //if letters are the same, propagate values down diagonally
 	  if(X[x] == Y[r]){
 	    if(x == 0 || r == 0){
-	    
 	      L[x][r] = 1;
-
-
-	      //mem
-	      tmp[x] = 1;
 	    }
 	    else{
 	      L[x][r] =  L[x - 1][r - 1] + 1;
-	      
-	      //mem
-	      tmp[x] = last[x - 1] + 1;
 	    }
 	  }
 	  //propagate values from the max of left or top
 	  else{
 	    if(x == 0 && r == 0){
 	      L[x][r] = 0;
-	      
-	      //mem
-	      tmp[x] = 0;
 	    }
 	    else if(x == 0){
 	      L[x][r] =  L[x][r - 1];
-	      
-	      //mem
-	      tmp[x] = next[x];
 	    }
 	    else if(r == 0){
 	      L[x][r] =  L[x - 1][r];
-	    
-	      //mem
-	      tmp[x] = next[x - 1];
 	    }
 	    else{
 	      L[x][r] = std::max( L[x - 1][r],  L[x][r - 1]);
-	    
-	      //mem
-	      tmp[x] = std::max(next[x - 1], next[x]);
 	    }
 	  }
 
 	}
-	
-	//copy over memory
-	memcpy(last, next, sizeof last);
-	memcpy(next, tmp, sizeof next);
     }
     
     
     double t = omp_get_wtime() - t0;
 
-    std::cout << "Mem LCS : " << next[biggest - 1] << std::endl;
-
     printf("Total time: %f\n", t);
 
-    //std::cout << "Mem LCS: " << next[biggest - 1] << std::endl;
     return L[n - 1][m - 1];
 }
 
@@ -289,8 +240,7 @@ int mem_parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
 
     printf("Total time: %f\n", t);
 
-    //std::cout << "Mem LCS: " << next[biggest - 1] << std::endl;
-    return next[biggest - 1];
+    return next[max_arr - 1];
 }
 
 
