@@ -59,6 +59,8 @@ int main(int argc, char *argv[]) {
     std::cout << "\n";
     std::cout << "Parallel LCS is " << parallel_lcs(X, Y, n, m) << std::endl;
     std::cout << "\n";
+    std::cout << "Memory Efficient LCS is " << mem_parallel_lcs(X, Y, n, m) << std::endl;
+    std::cout << "\n";
     return 0;
 }
 
@@ -94,8 +96,8 @@ std::vector<char> read(std::string file, int len){
  * parallel-lcs
  * @param X - char array of LCS file 1
  * @param Y - char array of LCS file 2
- * @param n1 - length of LCS file 1
- * @param n2 - length of LCS file 2
+ * @param n - length of LCS file 1
+ * @param m - length of LCS file 2
  * @return - int - length of greatest LCS
  */
 int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
@@ -202,6 +204,95 @@ int parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
     //std::cout << "Mem LCS: " << next[biggest - 1] << std::endl;
     return L[n - 1][m - 1];
 }
+
+
+/**
+ * mem_parallel_lcs
+ * @param X - char array of LCS file 1
+ * @param Y - char array of LCS file 2
+ * @param n - length of LCS file 1
+ * @param m - length of LCS file 2
+ * @return - int - length of greatest LCS
+ * @desc
+ * This version of the parallel LCS is a memory efficient version. 
+ * instead of keeping a M * N 2d array, you have a two single 1d matrices
+ * each of size M and N respectively.
+ */
+int mem_parallel_lcs(std::vector<char> X, std::vector<char> Y, int n, int m){
+    //Largest diagonal is the max the smallest between m and n
+    int max_arr = std::max(m,n);
+
+
+    //Memory Efficient LCS
+    int next[max_arr];
+    int last[max_arr];
+
+    for(int p = 0; p < max_arr; p++){
+      next[p] = 0;
+      last[p] = 0;
+    }
+
+    double t0 = omp_get_wtime();
+    
+    //Parallel LCS implementation
+    for (int i = 0; i <= (n + m - 1); i++){
+
+    int col = std::max(0, i - n);
+    int size = std::min(i, std::min((m - col), n));
+
+    int tmp[max_arr];
+
+    #pragma omp parallel for
+    for(int u = 0; u < max_arr; u++){
+      tmp[u] = 0;
+    }
+
+    #pragma omp parallel for
+    for (int j = 0; j < size; j++){
+
+      int l = std::min(n, i);
+      int r = col + j;
+      int x = l - j - 1;
+      
+      //if letters are the same, propagate values down diagonally
+      if(X[x] == Y[r]){
+        if(x == 0 || r == 0){
+          tmp[x] = 1;
+        }
+        else{
+          tmp[x] = last[x - 1] + 1;
+        }
+      }
+      //propagate values from the max of left or top
+      else{
+        if(x == 0 && r == 0){
+          tmp[x] = 0;
+        }
+        else if(x == 0){
+          tmp[x] = next[x];
+        }
+        else if(r == 0){
+          tmp[x] = next[x - 1];
+        }
+        else{
+          tmp[x] = std::max(next[x - 1], next[x]);
+        }
+      }
+    }
+    //copy over memory
+    memcpy(last, next, sizeof last);
+    memcpy(next, tmp, sizeof next);
+  }
+    
+    
+    double t = omp_get_wtime() - t0;
+
+    printf("Total time: %f\n", t);
+
+    //std::cout << "Mem LCS: " << next[biggest - 1] << std::endl;
+    return next[biggest - 1];
+}
+
 
 /**
  * LCS
