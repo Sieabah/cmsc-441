@@ -1,16 +1,16 @@
 #!/bin/bash
-#SBATCH --job-name=proj2-cpu16
-#SBATCH --output cpu16.out
-#SBATCH --error cpu16.err
+#SBATCH --job-name=proj2-cpu8
+#SBATCH --output cpu8.out
+#SBATCH --error cpu8.err
 #SBATCH --partition=batch
 #SBATCH --qos=short
-#SBATCH --constraint=hpcf2013
+#SBATCH --constraint=hpcf2010
 #SBATCH --exclusive
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=8
 #SBATCH --ntasks=1
 
 export KMP_AFFINITY="verbose,compact"
-export OMP_NUM_THREADS=16
+export OMP_NUM_THREADS=8
 srun ./main test1.txt 10 test2.txt 10
 srun ./main test1.txt 25 test2.txt 25
 srun ./main test1.txt 50 test2.txt 50

@@ -4,7 +4,7 @@
 #SBATCH --error cpu16.err
 #SBATCH --partition=batch
 #SBATCH --qos=short
-#SBATCH --constraint=hpcf2013
+#SBATCH --constraint=hpcf2010
 #SBATCH --exclusive
 #SBATCH --cpus-per-task=16
 #SBATCH --ntasks=1
