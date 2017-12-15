@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=proj2-cpu16
-#SBATCH --output cpu16.out
-#SBATCH --error cpu16.err
+#SBATCH --output out/cpu16.out
+#SBATCH --error err/cpu16.err
 #SBATCH --partition=batch
 #SBATCH --qos=short
-#SBATCH --constraint=hpcf2010
+#SBATCH --constraint=hpcf2013
 #SBATCH --exclusive
 #SBATCH --cpus-per-task=16
 #SBATCH --ntasks=1
